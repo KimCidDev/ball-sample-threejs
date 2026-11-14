@@ -65,6 +65,21 @@ const material = new THREE.MeshPhysicalMaterial({
   sheen: 0.6,
   sheenColor: new THREE.Color(0xbcd4ff),
 });
+// Cores do jogo: azul em repouso -> rosa quando apertada ao máximo.
+const BALL_BLUE = new THREE.Color(0x4f8cff);
+const BALL_PINK = new THREE.Color(0xff4fa3);
+const SHEEN_BLUE = new THREE.Color(0xbcd4ff);
+const SHEEN_PINK = new THREE.Color(0xffc2e0);
+let colorT = 0;
+
+function updateBallColor(dt) {
+  // acompanha o aperto (e volta suavemente para o azul ao soltar)
+  const target = THREE.MathUtils.clamp(squeeze.x / MAX_SQUEEZE, 0, 1);
+  colorT += (target - colorT) * Math.min(1, dt * 6);
+  material.color.copy(BALL_BLUE).lerpHSL(BALL_PINK, colorT);
+  material.sheenColor.copy(SHEEN_BLUE).lerpHSL(SHEEN_PINK, colorT);
+}
+
 const ball = new THREE.Mesh(geometry, material);
 ball.castShadow = true;
 ball.position.y = RADIUS;
@@ -454,6 +469,7 @@ renderer.setAnimationLoop(() => {
   const steps = 4;
   for (let i = 0; i < steps; i++) stepPhysics(frameDt / steps);
   lastMinY = deformBall(); // malha recalculada uma vez por quadro
+  updateBallColor(frameDt);
   followHands(frameDt);
   updateCursor(frameDt);
   controls.update();
