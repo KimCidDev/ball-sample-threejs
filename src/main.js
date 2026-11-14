@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { initUI } from './ui.js';
 
 // ---------------------------------------------------------------------------
 // Cena, câmera e renderizador
@@ -211,6 +212,12 @@ controls.enablePan = false;
 controls.minDistance = 2.5;
 controls.maxDistance = 9;
 controls.maxPolarAngle = Math.PI / 2 - 0.05;
+// No menu a câmera gira sozinha ao redor da bola.
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.8;
+controls.enabled = false;
+
+let playing = false;
 
 // ---------------------------------------------------------------------------
 // Cursor: a menina
@@ -221,9 +228,12 @@ const HOTSPOT_Y = 30;
 const BODY_OFFSET = 95; // distância do ponto das mãos até o centro do corpo
 
 const imgOpen = new Image();
-imgOpen.src = '/cursor/girl-open.png';
 const imgClosed = new Image();
-imgClosed.src = '/cursor/girl-closed.png';
+function setCharacterImages(character) {
+  imgOpen.src = character.open;
+  imgClosed.src = character.closed;
+}
+setCharacterImages({ open: '/cursor/girl-open.png', closed: '/cursor/girl-closed.png' });
 
 const cursorEl = document.createElement('img');
 cursorEl.id = 'girl-cursor';
@@ -357,6 +367,7 @@ const dragOffset = { x: 0, y: 0 };
 window.addEventListener(
   'pointerdown',
   (e) => {
+    if (!playing || e.target.closest('button')) return;
     if (isMouse(e)) {
       if (e.button !== 0) return;
       girl.x = e.clientX;
@@ -389,6 +400,7 @@ window.addEventListener(
 );
 
 window.addEventListener('pointermove', (e) => {
+  if (!playing) return;
   if (isMouse(e)) {
     girl.x = e.clientX;
     girl.y = e.clientY;
@@ -402,10 +414,11 @@ window.addEventListener('pointermove', (e) => {
 });
 
 function onPointerEnd(e) {
+  if (!playing) return;
   if (isMouse(e)) {
     setHands(false);
     release();
-    controls.enabled = true;
+    controls.enabled = hasHover;
     return;
   }
   if (e.pointerId !== activeTouchId) return;
@@ -446,3 +459,32 @@ renderer.setAnimationLoop(() => {
   controls.update();
   renderer.render(scene, camera);
 });
+
+// ---------------------------------------------------------------------------
+// Menus / estados do jogo
+// ---------------------------------------------------------------------------
+function startGame(character) {
+  setCharacterImages(character);
+  girl.closed = true; // força troca de imagem
+  setHands(false);
+  girl.x = window.innerWidth / 2;
+  girl.y = window.innerHeight * 0.72;
+  activeTouchId = null;
+  touchMode = null;
+  press.active = false;
+  controls.autoRotate = false;
+  controls.enabled = hasHover; // no toque, arrastar é da menina
+  playing = true;
+}
+
+function stopGame() {
+  playing = false;
+  release();
+  setHands(false);
+  activeTouchId = null;
+  touchMode = null;
+  controls.enabled = false;
+  controls.autoRotate = true;
+}
+
+initUI({ onStart: startGame, onMenu: stopGame });

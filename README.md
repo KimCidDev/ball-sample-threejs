@@ -1,4 +1,4 @@
-# Squishie 3D
+# Mamá's Squishy World
 
 **Three.js** + **Vite** project: a squishy ball with simple physics, squeezed by a cursor shaped like a girl.
 
@@ -10,6 +10,12 @@ npm run dev
 ```
 
 Opens at http://localhost:5173
+
+## Screens
+
+1. **Title screen**: the *Mamá's Squishy World* logo with **Play game** (starts with Mamá) and **Choose character**.
+2. **Choose character**: Mamá's card (arms raised, hands touching), then **Play**.
+3. **Game**: the **Menu** button (or `Esc`) goes back to the title screen.
 
 ## How to play
 
