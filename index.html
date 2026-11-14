@@ -2,11 +2,17 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Esfera 3D — Three.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Squishie 3D — Three.js</title>
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #0e1116; }
-      canvas { display: block; }
+      body { cursor: none; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+      canvas { display: block; touch-action: none; }
+      #girl-cursor {
+        position: fixed; left: 0; top: 0; z-index: 10;
+        pointer-events: none; will-change: transform;
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+      }
     </style>
   </head>
   <body>
