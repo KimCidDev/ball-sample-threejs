@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { initUI } from './ui.js';
+import { initUI, CHARACTERS } from './ui.js';
 
 // ---------------------------------------------------------------------------
 // Cena, câmera e renderizador
@@ -233,7 +233,7 @@ function setCharacterImages(character) {
   imgOpen.src = character.open;
   imgClosed.src = character.closed;
 }
-setCharacterImages({ open: '/cursor/girl-open.png', closed: '/cursor/girl-closed.png' });
+setCharacterImages(CHARACTERS.mama);
 
 const cursorEl = document.createElement('img');
 cursorEl.id = 'girl-cursor';

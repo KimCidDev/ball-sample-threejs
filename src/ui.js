@@ -1,10 +1,14 @@
 // Menus: tela inicial -> escolha de personagem -> jogo.
 
+// BASE_URL permite publicar em subpasta (ex.: GitHub Pages).
+const BASE = import.meta.env.BASE_URL;
+
 export const CHARACTERS = {
   mama: {
     name: 'Mamá',
-    open: '/cursor/girl-open.png',
-    closed: '/cursor/girl-closed.png',
+    open: `${BASE}cursor/girl-open.png`,
+    closed: `${BASE}cursor/girl-closed.png`,
+    portrait: `${BASE}characters/mama.png`,
   },
 };
 
@@ -18,6 +22,11 @@ export function initUI({ onStart, onMenu }) {
   const touch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   let selected = 'mama';
+
+  document.querySelectorAll('.char-card').forEach((card) => {
+    const img = card.querySelector('img');
+    if (img) img.src = CHARACTERS[card.dataset.character].portrait;
+  });
 
   function show(name) {
     for (const [key, el] of Object.entries(screens)) el.classList.toggle('active', key === name);

@@ -39,6 +39,12 @@ Opens at http://localhost:5173
 
 `public/cursor/girl-open.png` and `girl-closed.png`: background-removed cutouts at 2× resolution (300×360), with the hotspot between the hands at (150, 60).
 
+## Publishing (GitHub Pages)
+
+The `.github/workflows/pages.yml` workflow builds and publishes on every push to `main` (or manually from the Actions tab).
+One-time setup: **Settings → Pages → Source: GitHub Actions**.
+Public link: `https://kimciddev.github.io/ball-sample-threejs/`
+
 ## Production build
 
 ```bash
