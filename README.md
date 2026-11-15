@@ -1,51 +1,67 @@
-# Mamá's Squishy World
+# Mundo Squishy
 
-**Three.js** + **Vite** project: a squishy ball with simple physics, squeezed by a cursor shaped like a girl.
+Brincadeira em 3D com **Three.js** + **Vite**: uma bola squishie que dá para apertar, arrastar e arremessar, com a Mamá, o Kike, o Eric ou o Theo, na praia no Brasil ou na neve no Canadá.
 
-## Run locally
+**Stack:** Three.js (WebGL) · Vite · JavaScript puro · Web Audio API (sons sintetizados) · GitHub Pages
+
+## Rodar localmente
 
 ```bash
 npm install
 npm run dev
 ```
 
-Opens at http://localhost:5173
+Abre em http://localhost:5173
 
-## Screens
+## Telas
 
-1. **Title screen**: the *Mamá's Squishy World* logo with **Play game** (starts with Mamá) and **Choose character**.
-2. **Choose character**: Mamá's card (arms raised, hands touching), then **Play**.
-3. **Game**: the **Menu** button (or `Esc`) goes back to the title screen.
+1. **Início:** logo *Mundo Squishy* com **Jogar**, **Personagens** e **Cenários**. A bola fica livre no meio da tela.
+2. **Personagens:** Mamá, Kike, Eric e Theo.
+3. **Cenários:** Brasil (praia com coqueiros, mar e morros) ou Canadá (pinheiros, montanhas, boneco de neve e neve caindo).
+4. **Jogo:** **Menu** (ou `Esc`) volta ao início; o botão verde troca de cenário na hora; o botão de alto-falante liga/desliga o som.
 
-## How to play
+As escolhas ficam salvas no navegador para a próxima visita.
 
-**Desktop (mouse)**
-- The girl follows the mouse, and her arms always aim at the ball.
-- Click and hold **on the ball**: she closes her hands and squeezes it. The longer you hold, the more the ball flattens and dents.
-- Release: the ball wobbles like jelly and gives a little hop.
-- Drag outside the ball to rotate the camera. Use the scroll wheel to zoom.
+## Como brincar
 
-**Mobile (touch)**
-- **Drag the girl** (touch on her and move) to bring her to the ball.
-- **Touch and hold anywhere else on the screen** to squeeze the ball at the spot where her hands are.
+- **Computador:** a personagem segue o mouse. Clique e segure **na bola** para apertar; arraste segurando para levar a bola e solte em movimento para arremessar. Arrastar fora da bola gira a câmera; a rodinha dá zoom.
+- **Celular:** toque e segure na bola para apertar; arraste o dedo para levar a bola. Ao soltar, a personagem volta para o lugar dela, em pé, segurando a bola por baixo.
 
-## Physics
+A dica de como jogar fica sempre visível no rodapé.
 
-- Deformable mesh (subdivided icosahedron) recalculated every frame.
-- Damped springs drive the squeeze (volume-preserving flattening along the squeeze axis), the hand dent, and the squash on floor impacts.
-- Gravity, floor collision with bounce, and soft shadows.
+## Física da bola
 
-## Cursor assets
+Cada quadro deforma uma esfera subdividida (≈7.800 vértices) somando várias camadas:
 
-`public/cursor/girl-open.png` and `girl-closed.png`: background-removed cutouts at 2× resolution (300×360), with the hotspot between the hands at (150, 60).
+- **Ondas na superfície:** cada vértice tem uma mola radial ligada aos vizinhos (equação de onda discreta). Apertos e batidas "cutucam" a superfície e as ondas se espalham.
+- **Afundamento das mãos** com um **bojo** em volta (o material empurrado sobe ao redor dos dedos).
+- **Achatamento com volume conservado** ao longo do eixo do aperto, mais um **balanço de gelatina** num eixo perpendicular quando você solta.
+- **Achatamento de impacto** no chão e nas paredes invisíveis, e **esticar** na direção do movimento.
+- Gravidade, quique, atrito de rolamento e **rolagem** coerente com o deslocamento.
 
-## Publishing (GitHub Pages)
+## Personagens
 
-The `.github/workflows/pages.yml` workflow builds and publishes on every push to `main` (or manually from the Actions tab).
-One-time setup: **Settings → Pages → Source: GitHub Actions**.
-Public link: `https://kimciddev.github.io/ball-sample-threejs/`
+As imagens de cursor têm a mesma geometria: 300×360 (2×), com o ponto entre as mãos em (150, 60).
+Kike, Eric e Theo ainda usam bonecos ilustrados provisórios (`public/characters/*.svg`) — trocar pelas fotos recortadas, no mesmo formato das da Mamá (`public/cursor/girl-open.png` e `girl-closed.png`), e atualizar `src/characters.js`.
 
-## Production build
+## Estrutura
+
+```
+src/main.js        cena, câmera, personagem-cursor e interação
+src/ball.js        malha deformável e física da bola
+src/scenes.js      cenários Brasil e Canadá
+src/characters.js  lista de personagens e cenários
+src/ui.js          menus, HUD e preferências salvas
+src/audio.js       sons de aperto, "boing" e batidas
+```
+
+## Publicação (GitHub Pages)
+
+O workflow `.github/workflows/pages.yml` gera o build e publica a cada push na `main` (ou manualmente na aba Actions).
+Configuração única: **Settings → Pages → Source: GitHub Actions**.
+Link público: `https://kimciddev.github.io/ball-sample-threejs/`
+
+## Build de produção
 
 ```bash
 npm run build
