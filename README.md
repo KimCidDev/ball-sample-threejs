@@ -42,7 +42,7 @@ Cada quadro deforma uma esfera subdividida (≈7.800 vértices) somando várias 
 ## Personagens
 
 As imagens de cursor têm a mesma geometria: 300×360 (2×), com o ponto entre as mãos em (150, 60).
-Fotos recortadas em `public/characters/`: `<nome>-open.png` (mãos abertas), `<nome>-closed.png` (mãos juntas) e `<nome>.png` (retrato do card). As da Mamá ficam em `public/cursor/`. Para adicionar alguém, siga o mesmo formato e acrescente uma entrada em `src/characters.js`.
+Fotos recortadas em `public/characters/`: `<nome>-open.png` (mãos abertas), `<nome>-closed.png` (mãos juntas) e `<nome>.png` (retrato do card, de braços abertos). As da Mamá ficam em `public/cursor/`. Para adicionar alguém, siga o mesmo formato e acrescente uma entrada em `src/characters.js`.
 
 ## Estrutura
 
