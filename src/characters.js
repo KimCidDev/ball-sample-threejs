@@ -9,7 +9,7 @@ export const CHARACTERS = {
     name: 'Mamá',
     open: `${BASE}cursor/girl-open.png`,
     closed: `${BASE}cursor/girl-closed.png`,
-    portrait: `${BASE}characters/mama.png`,
+    portrait: `${BASE}cursor/girl-open.png`,
     color: '#ff4fa3',
   },
   kike: {
